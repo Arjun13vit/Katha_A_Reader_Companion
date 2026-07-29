@@ -140,8 +140,8 @@ See `.env.example` for the full list. Key variables:
 
 ## 👥 Contributors
 
-- **[Your Name]** — Backend (Express, MongoDB, AI/TTS integration)
-- **[Friend's Name]** — Frontend (React, PDF.js, UI/UX)
+- **ARJUN** — Backend (Express, MongoDB, AI/TTS integration)
+- **ARUNADITYA RAGURAMAN** — Frontend (React, PDF.js, UI/UX)
 
 ---
 
