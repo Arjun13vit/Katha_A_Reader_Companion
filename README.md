@@ -63,6 +63,7 @@ katha/
 │   ├── routes/
 │   ├── middleware/
 │   └── services/      # AI summarization + TTS integration
+├── design/            # DA2: architecture/UML/pattern diagrams (.drawio + PNG) and Figma UI exports
 ├── docker-compose.yml
 ├── .env.example
 └── README.md
@@ -122,10 +123,50 @@ See `.env.example` for the full list. Key variables:
 
 ---
 
+## 🧱 Software Design (DA2)
+
+Katha follows a layered client–server architecture — Frontend → Backend API → Service Layer → MongoDB Atlas — with an AI Proxy branch that keeps LLM and TTS vendor keys off the client, all running inside a Docker Compose boundary for local development. SOLID's Dependency Inversion Principle is applied through an `AIService` interface that `AIController` depends on, with `OpenAIProvider`, `LocalLLMProvider`, and `TTSProvider` implementing it — so swapping AI vendors never touches controller code.
+
+**GoF Design Patterns applied:**
+
+| Pattern | Where it's used |
+|---|---|
+| **Adapter** | Normalizing calls to the external LLM API and TTS API behind a common interface |
+| **Facade** | `AcademicModeFacade` simplifies summarize/explain/narrate into one entry point for the frontend |
+| **Strategy** | Interchangeable reading/render strategies (flipbook vs. continuous scroll) |
+| **Observer** | Reading-progress sync between the `BookViewer` and `BookmarkService` |
+| **Factory Method** | Generating book covers and soundscape selections |
+| **Singleton** | Single shared MongoDB connection instance |
+
+All editable diagram sources (`.drawio`) and their PNG exports — architecture diagram, UML class diagram, and design pattern map — are in [`/design`](./design).
+
+![High-Level Architecture](design/architecture.png)
+![UML Class Diagram – AI Service Layer](design/uml-class-diagram.png)
+![Design Pattern Map](design/pattern-map.png)
+
+*(Rename the paths above to match the exact filenames you uploaded into `/design` if they differ.)*
+
+---
+
+## 🎨 UI Design (Figma)
+
+Six core screens were designed in Figma to cover the full reading flow — Library, Flipbook Reader, Academic Mode AI panel, Bookmarks, Notes, and Settings. Exports are included in [`/design`](./design) alongside the diagrams above.
+
+- **Library / Home** — book grid with progress rings and a "Resume reading" banner
+- **Flipbook Reading View** — two-page book layout with zoom controls
+- **Academic Mode AI Panel** — highlighted text paired with Summarize / Explain / Narrate actions
+- **Bookmarks** — list view of all saved bookmarks
+- **Notes** — split view with a note editor alongside the page
+- **Settings** — theme selection and Leisure/Academic mode toggle
+
+---
+
 ## 🗺️ Roadmap
 
 - [x] PDF upload + flipbook rendering
 - [x] Bookmarks & auto-cover generation
+- [x] Software design: architecture, UML, and pattern diagrams (DA2)
+- [x] UI design: Figma screens for all core flows (DA2)
 - [ ] Notes tied to highlights
 - [ ] Zoom controls
 - [ ] Leisure / Academic mode toggle
